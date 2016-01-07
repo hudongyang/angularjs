@@ -1,0 +1,24 @@
+{
+  "name": "angularjs-demos",
+  "version": "1.0.0",
+  "description": "angularjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hudongyang/angularjs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hudongyang/angularjs/issues"
+  },
+  "homepage": "https://github.com/hudongyang/angularjs#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "express": "^4.13.3",
+    "qs": "^6.0.1"
+  }
+}

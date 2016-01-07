@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+</head>
+<body>
+    <div class="container" ng-controller="TextAreaWidthLimitCtrl">
+        <span ng-class="{'text-warning': showWarn()}">Remaining: {{remaining()}}</span>
+        <div class="row">
+            <textarea ng-model="message"></textarea>
+        </div>
+        <div class="row">
+            <button ng-click="send()" ng-disabled="!hasValidLength()">send</button>
+            <button ng-click="clear()">clear</button>
+        </div>
+    </div>
+    <script>
+        angular
+            .module('myapp', [])
+            .controller('TextAreaWidthLimitCtrl', function($scope) {
+                var MAX_LEN = 5;
+                $scope.remaining = function() {
+                    return MAX_LEN - $scope.message.length;
+                };
+                $scope.send = function() {};
+                $scope.clear = function() {};
+                $scope.hasValidLength = function() {
+                    return $scope.remaining() >= 0;
+                };
+                $scope.showWarn = function() {
+                    return $scope.remaining() < 3;
+                };
+                $scope.message = '';
+            });
+    </script>
+    
+</body>
+</html>

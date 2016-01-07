@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../lib/angular.js"></script>
+</head>
+<body>
+    <ul ng-controller="WorldCtrl">
+        
+    </ul>
+
+    <script>
+    angular
+        .module('myapp', [])
+        .controller('WorldCtrl', function($http) {
+            var user = {
+                name: 'hudy',
+                age: 30
+            };
+
+            var req = {
+                method: 'GET',
+                url: 'http://localhost:3001/api/users'
+            };
+
+            $http(req)
+                .success(function(data, status, headers, config) {
+                    console.log(arguments);
+                })
+                .error(function() {
+                    console.log(arguments);
+                });
+
+            /*$http
+                .jsonp('/api/users?callback=JSON_CALLBACK', {
+                    params: {name: 'World'}
+                })
+                .success(function(data) {
+                    console.log(data);
+                });*/
+
+            // POST请求
+            /*$http
+                .post('/api/users', user, {
+                    params: {
+                        hello: 'world'
+                    }
+                })
+                .success(function(data, status, headers, config) {
+                    console.log(arguments);
+                })
+                .error(function(data, status, headers, config) {
+                    console.log(arguments);
+                    throw new Error(data);
+                });*/
+
+
+        });
+    </script>
+</body>
+</html>

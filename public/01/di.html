@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <title>di</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.js"></script>
+</head>
+<body ng-controller="MyCtrl">
+    <span ng-click="hello()">hello: {{appStarted}}</span>
+    <script>
+    var NotificationsArchive = function() {
+        this.a = 1;
+    };
+
+    var NotificationsService = function(notificationsArchive) {
+        this.MAX_LEN = 10;
+        this.notificationsArchive = notificationsArchive;
+        this.notifications = [];
+    };
+
+    NotificationsService.prototype.push = function(notification) {
+        var newLen, notificationToArchive;
+
+        newLen = this.notifications.unshift(notification);
+
+        if(newLen > this.notifications.length) {
+            notificationToArchive = this.notifications.pop();               
+            this.notificationsArchive.archive(notificationToArchive);
+        }
+    };
+
+    NotificationsService.prototype.getCurrent = function() {
+        return this.notifications;
+    };
+
+    var myapp = angular
+        .module('myapp', [])
+        .constant('MAX_LEN', 10)
+        .value('notificationsArchive', new NotificationsArchive())
+        // .service('notificationsService', NotificationsService)
+        /*.factory('notificationsService', function(notificationsArchive, MAX_LEN) {
+            var notifications = [];
+
+            return {
+                push: function() {
+                    console.log(MAX_LEN, notifications);
+                }
+            };
+        })*/
+        .provider('notificationsService', function() {
+            var config = {maxLen: 5};
+            var notifications = [];
+
+            return {
+                setMaxLen: function(maxLen) {
+                    config.maxLen = maxLen || config.maxLen;
+                },
+                $get: function(notificationsArchive) {
+                    return {
+                        push: function() {
+                            console.log(config.maxLen, notifications);
+                        }
+                    }
+                }
+            };
+        })
+        .config(function(notificationsServiceProvider, MAX_LEN) {
+            notificationsServiceProvider.setMaxLen(MAX_LEN);
+        })
+        .run(function($rootScope) {
+            $rootScope.appStarted = new Date();
+        })
+        .controller('MyCtrl', function($scope, notificationsService) {
+            $scope.hello = function() {
+                notificationsService.push();
+                // console.log(notificationsService);
+            };
+        });
+
+        angular
+            .module('app', ['cars', 'engines'])
+            .controller('MyCtrl', function($scope, car) {
+                $scope.hello = function() {
+                    car.start();
+                };
+            });
+
+        angular
+            .module('cars', [])
+            .factory('car', function($log, dieselEngine) {
+                return {
+                    start: function() {
+                        $log.info('Starting ' + dieselEngine.type);
+                    }
+                };
+            })
+            .factory('dieselEngine', function() {
+                return {type: 'custome diesel'};
+            });
+            
+
+        angular
+            .module('engines', [])
+            .factory('dieselEngine', function() {
+                return {
+                    type: 'diesel1'
+                };
+            });    
+
+    </script>
+</body>
+</html>

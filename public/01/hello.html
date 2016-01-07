@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="../node_modules/angular/angular.js"></script>
+</head>
+<body>
+    <ul ng-controller="WorldCtrl">
+        <li ng-repeat="contry in contries">
+            {{contry.name}} has population of {{contry.population}}, {{worldsPercentage(contry.population)}} of worlds population
+        </li>
+        <li>world's population: {{population}} millions.</li>
+    </ul>
+
+    <script>
+    angular
+        .module('myapp', [])
+        .controller('WorldCtrl', function($scope) {
+            $scope.population = 7000;
+            $scope.contries = [{
+                name: 'France',
+                population: 63.1
+            }, {
+                name: 'UK',
+                population: 61.8
+            }];
+
+            $scope.worldsPercentage = function(countryPopulation) {
+                var p = (countryPopulation / $scope.population) * 100;
+                return p.toFixed(2);
+            };
+        });
+    </script>
+</body>
+</html>
